@@ -15,6 +15,12 @@ let rad;
 
 let sel;
 
+let defaultFunc = 'x';
+
+let mathFuncBox;
+let mathFuncUpdateButton;
+let mathFunction;
+
 let lowerLimitBox,
     upperLimitBox;
 
@@ -26,11 +32,11 @@ function setup() {
   createCanvas(400, 400);
   
   sizeSlider = createSlider(10, 30, 20, 1); 
-  sizeSlider.position(0, height + 5);
+  sizeSlider.position(0, height + 75);
   
   // Selector for function options
   sel = createSelect();
-  sel.position(0, height + 30);
+  sel.position(0, height + 100);
   
   // Size of the selector box
   sel.style('width', '180px');
@@ -54,6 +60,16 @@ function setup() {
   
   // The default option for selector
   sel.value('1');
+
+  mathFuncBox = createInput(defaultFunc);
+  //mathFuncUpdateButton - createButton("Compute");
+  //console.log(defaultFunc);
+  mathFunction = new MathFunc(defaultFunc, upperLimit, lowerLimit);
+  mathFunction.getApproxArea(defaultFunc, 3, 1, 0.1);
+
+  mathFuncBox.position(10, height + 5);
+  //mathFuncUpdateButton.position(300, height);
+  //mathFuncUpdateButton.mousePressed(updateLimits);
   
   lowerLimitBox = createInput(lowerLimit);
   upperLimitBox = createInput(upperLimit);
@@ -66,7 +82,8 @@ function setup() {
   
   updateButton = createButton("Update");
   updateButton.position(330, height);
-  updateButton.mousePressed(updateLimits);
+  //updateButton.mousePressed(updateLimits);
+  updateButton.mousePressed(updateIntegral);
   
   // Selector for Δx
   deltaXSel = createSelect();
@@ -127,96 +144,113 @@ function draw()
   }
   
   // Mathematical function
-  let f = (x) =>
-  {
-    x = 1 * x;   
+  // let f = (x) =>
+  // {
+  //   x = 1 * x;   
     
-    // .selected() method returns the value of the selected option
-    //console.log(rad.selected());
-    if (sel.selected())
-    {
-      switch(sel.selected())
-      {
-        case '1':
-          return - ( (x) );
-        case '2':
-          return - ( (x*x) );
-        case '3':
-          return - ( (x*x*x) - (4*x*x) + (11) );
-        case '4':
-          return - ( (x*x*x*x) );
-        case '5':
-          return - ( (x*x*x*x*x) - (4*x*x*x) + (11) );
-        case '6':
-          return - ( atan(x) );
-        case '7':
-          return - ( abs(x) );
-        case '8':
-          return - ( exp(-x * x) );
-        case '9':
-          if ( lowerLimit <= 0 && sel.selected() === 9)
-          {
-            return;
-          }
-          else
-          {
-            return - ( log(x) ); 
-          }
-          break;
-        case '10':
-          return - ( (sin(2 * x)) + (3) );
-        case '11':
-          return - ( (cos(3 * x)) + (2) );
-        case '12':
-          return - ( cos(x) * (sin(x) * sin(x)) );
-        case '13':
-          return - ( tan(x) );
-        case '14':
-          if (lowerLimit < 0 && sel.selected() === 14)
-          {
-            text('ERROR: DOMAIN CANNOT BE NEGATIVE', width / 2, height / 2)
-            textAlign(CENTER);
-            return;
-          }
-          else
-          {
-            return - ( sqrt(x) );
-          }
-          break;
-        case '15':
-          return - ( (1 / (cos(x)*cos(x))) ); 
-        case '16':
-          return - ( (2) * (Math.cbrt(x - 1)) + 4 );
-        default:
+  //   // .selected() method returns the value of the selected option
+  //   //console.log(rad.selected());
+  //   if (sel.selected())
+  //   {
+  //     switch(sel.selected())
+  //     {
+  //       case '1':
+  //         return - ( (x) );
+  //       case '2':
+  //         return - ( (x*x) );
+  //       case '3':
+  //         return - ( (x*x*x) - (4*x*x) + (11) );
+  //       case '4':
+  //         return - ( (x*x*x*x) );
+  //       case '5':
+  //         return - ( (x*x*x*x*x) - (4*x*x*x) + (11) );
+  //       case '6':
+  //         return - ( atan(x) );
+  //       case '7':
+  //         return - ( abs(x) );
+  //       case '8':
+  //         return - ( exp(-x * x) );
+  //       case '9':
+  //         if ( lowerLimit <= 0 && sel.selected() === 9)
+  //         {
+  //           return;
+  //         }
+  //         else
+  //         {
+  //           return - ( log(x) ); 
+  //         }
+  //         break;
+  //       case '10':
+  //         return - ( (sin(2 * x)) + (3) );
+  //       case '11':
+  //         return - ( (cos(3 * x)) + (2) );
+  //       case '12':
+  //         return - ( cos(x) * (sin(x) * sin(x)) );
+  //       case '13':
+  //         return - ( tan(x) );
+  //       case '14':
+  //         if (lowerLimit < 0 && sel.selected() === 14)
+  //         {
+  //           text('ERROR: DOMAIN CANNOT BE NEGATIVE', width / 2, height / 2)
+  //           textAlign(CENTER);
+  //           return;
+  //         }
+  //         else
+  //         {
+  //           return - ( sqrt(x) );
+  //         }
+  //         break;
+  //       case '15':
+  //         return - ( (1 / (cos(x)*cos(x))) ); 
+  //       case '16':
+  //         return - ( (2) * (Math.cbrt(x - 1)) + 4 );
+  //       default:
           
-      }
-    }
-    else
-    {
-      // Default Graph
-      return -x;
-    }
+  //     }
+  //   }
+  //   else
+  //   {
+  //     // Default Graph
+  //     return -x;
+  //   }
   
-  }
+  // }
   
   // Creates different color for function
   noFill();
   stroke(0);
   strokeWeight(2/zoomScale);
   
+  drawMathFunc();
   // Graphing behavior of function
-  beginShape();
-  for(var x = -width/zoomScale; x < width/zoomScale; x += 0.1)
-  {
-    vertex(x, f(x)); 
-  }
-  endShape();
+  //beginShape();
+  // for(var x = -width/zoomScale; x < width/zoomScale; x += 0.1)
+  // {
+  //   vertex(x, f(x)); 
+  // }
+  // endShape();
   
-  integral(f, deltaX, lowerLimit, upperLimit);
-    
+
+  drawIntegral(mathFunction, deltaX, upperLimit, lowerLimit);
+  //integral(f, deltaX, lowerLimit, upperLimit);
 }
 
-// Method for creating the axes and ticks on them
+/**
+ * Draws the shape of the selected math function.
+ */
+function drawMathFunc() {
+  //mathFunction = new MathFunc(defaultFunc, upperLimit, lowerLimit);
+
+  beginShape();
+  for (var x = -width/zoomScale; x < width/zoomScale; x += 0.1) {
+    vertex(x, -mathFunction.evaluateAt(x));
+  }
+  endShape();
+}
+
+/**
+ * Creating the x and y axes with ticks
+ */
 function axes()
 {
   push();
@@ -284,8 +318,24 @@ function grid()
     }
   }
 }
+/**
+ * 
+ * @param {*} mathFunction 
+ * @param {*} deltaX 
+ * @param {*} upperLimit 
+ * @param {*} lowerLimit 
+ */
+function drawIntegral(mathFunction, deltaX, upperLimit, lowerLimit) {
+    noFill();
+    stroke('rgb(0,200,230)');
+    strokeWeight(0.05);
 
-// Method used to find the area and create the rectangles
+    for (var x = lowerLimit; x < upperLimit; x += deltaX) {
+      rect(x, 0, deltaX, -mathFunction.evaluateAt(x));
+    }    
+}
+
+// (OLD) Method used to find the area and create the rectangles
 function integral(f, deltaX, lowerLimit, upperLimit)
 {
   var area = 0; 
@@ -343,7 +393,45 @@ function integral(f, deltaX, lowerLimit, upperLimit)
   pop();
 }
 
-// Method for updating the limits of integration
+/**
+ * Updates the mathFunction, and the limits of integration.
+ */
+function updateIntegral() {
+
+  var a = parseFloat(lowerLimitBox.value(), 10);
+  var b = parseFloat(upperLimitBox.value(), 10);
+  
+  // Will not update canvas if none of these hold
+  if (a !== isNaN && b !== isNaN && b > a)
+  {
+    lowerLimit = a;
+    upperLimit = b;
+  }
+  
+  // Checks if the rules are being followed
+  if (upperLimitBox.value(isNaN))
+  {
+    upperLimitBox.value(upperLimit);  
+  }
+  
+  if (lowerLimitBox.value(isNaN))
+  {
+    lowerLimitBox.value(lowerLimit);
+  }
+  else if (a > b)
+  {
+    lowerLimitBox.value(lowerLimit); 
+  }  
+
+  // If update is clicked with an empty function box
+  if (mathFuncBox.value() == "") {
+    // Use the defaultFunc
+    mathFuncBox.value(defaultFunc);
+  } 
+  mathFunction = new MathFunc(mathFuncBox.value(), b, a);
+}
+
+// (OLD) Method for updating the limits of integration
 function updateLimits()
 {
   var a = parseFloat(lowerLimitBox.value(), 10);
