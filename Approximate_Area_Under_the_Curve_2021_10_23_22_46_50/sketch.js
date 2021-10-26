@@ -1,7 +1,7 @@
 var lowerLimit = 1, upperLimit = 3;
 
 // Original variable declaration before having selector button
-//var deltaX = 0.1;
+var deltaX = 0.1;
 
 var zoomScale = 15;
 
@@ -11,15 +11,19 @@ var rectangleCount = 1;
 
 let sizeSlider;
 
-let rad;
+let colorSlider;
 
-let sel;
+// let rad;
+
+// let sel;
 
 let defaultFunc = 'x';
 
 let mathFuncBox;
 let mathFuncUpdateButton;
 let mathFunction;
+
+let answerBox;
 
 let lowerLimitBox,
     upperLimitBox;
@@ -29,43 +33,44 @@ let updateButton;
 let deltaXSel;
 
 function setup() {
+  //createCanvas(windowWidth, windowHeight);
   createCanvas(400, 400);
   
   sizeSlider = createSlider(10, 30, 20, 1); 
   sizeSlider.position(0, height + 75);
   
-  // Selector for function options
-  sel = createSelect();
-  sel.position(0, height + 100);
+  // // Selector for function options
+  // sel = createSelect();
+  // sel.position(0, height + 100);
   
-  // Size of the selector box
-  sel.style('width', '180px');
+  // // Size of the selector box
+  // sel.style('width', '180px');
   
-  sel.option('(1) x^1', 1);
-  sel.option('(2) x^2', 2);
-  sel.option('(3) x^3 - 4x^2 + 11', 3);
-  sel.option('(4) x^4', 4);
-  sel.option('(5) x^5 - 4x^3 + 11', 5);
-  sel.option('(6) arctan(x)', 6);
-  sel.option('(7) |x|', 7);
-  sel.option('(8) e^(-x^2)', 8);
-  sel.option('(9) ln(x)', 9);
-  sel.option('(10) sin(2x) + 3', 10);
-  sel.option('(11) cos(3x) + 2', 11);
-  sel.option('(12) cos(x) * sin^2(x)', 12);
-  sel.option('(13) tan(x)', 13);
-  sel.option('(14) sqrt(x)', 14);
-  sel.option('(15) sec^2(x)', 15);
-  sel.option('(16) 2 * (x - 1)^(1/3) + 4', 16);
+  // sel.option('(1) x^1', 1);
+  // sel.option('(2) x^2', 2);
+  // sel.option('(3) x^3 - 4x^2 + 11', 3);
+  // sel.option('(4) x^4', 4);
+  // sel.option('(5) x^5 - 4x^3 + 11', 5);
+  // sel.option('(6) arctan(x)', 6);
+  // sel.option('(7) |x|', 7);
+  // sel.option('(8) e^(-x^2)', 8);
+  // sel.option('(9) ln(x)', 9);
+  // sel.option('(10) sin(2x) + 3', 10);
+  // sel.option('(11) cos(3x) + 2', 11);
+  // sel.option('(12) cos(x) * sin^2(x)', 12);
+  // sel.option('(13) tan(x)', 13);
+  // sel.option('(14) sqrt(x)', 14);
+  // sel.option('(15) sec^2(x)', 15);
+  // sel.option('(16) 2 * (x - 1)^(1/3) + 4', 16);
   
-  // The default option for selector
-  sel.value('1');
+  // // The default option for selector
+  // sel.value('1');  
 
   mathFuncBox = createInput(defaultFunc);
   //mathFuncUpdateButton - createButton("Compute");
   //console.log(defaultFunc);
   mathFunction = new MathFunc(defaultFunc, upperLimit, lowerLimit);
-  mathFunction.getApproxArea(defaultFunc, 3, 1, 0.1);
+  mathFunction.getApproxArea(deltaX);
 
   mathFuncBox.position(10, height + 5);
   //mathFuncUpdateButton.position(300, height);
@@ -96,6 +101,11 @@ function setup() {
   deltaXSel.option('(4) Δx = 0.01', 4);
   
   deltaXSel.value('3');
+
+  // answerBox contains the result
+  answerBox = createInput(mathFunction.getApproxArea(deltaX));
+  answerBox.position(10, height + 35);
+  answerBox.attribute('readonly', true);  // Make the input box non-modifiable
 }
 
 function draw() 
@@ -107,8 +117,8 @@ function draw()
   let sliderVal = sizeSlider.value();
   scale(sliderVal);
   
-  // Translates to the canvas to the origin of the axes
-  translate(width / (1.9 * sliderVal), height / (2 * sliderVal) + 5);
+  // Translates the canvas to the origin of the axes
+  translate(width / (2.0 * sliderVal), height / (2 * sliderVal) + 5);
   
   // For drawing a cartesian plane (Not aligned yet, very slow)
   //push();
@@ -222,16 +232,9 @@ function draw()
   strokeWeight(2/zoomScale);
   
   drawMathFunc();
-  // Graphing behavior of function
-  //beginShape();
-  // for(var x = -width/zoomScale; x < width/zoomScale; x += 0.1)
-  // {
-  //   vertex(x, f(x)); 
-  // }
-  // endShape();
-  
 
   drawIntegral(mathFunction, deltaX, upperLimit, lowerLimit);
+  answerBox.value(mathFunction.getApproxArea(deltaX));
   //integral(f, deltaX, lowerLimit, upperLimit);
 }
 
@@ -297,33 +300,12 @@ function axes()
   
 }
 
-// An optional method for a cartesian grid background
-function grid()
-{
-  // From https://editor.p5js.org/mparker/sketches/oPEEhv8x-
-  //let w = width/(2*zoomScale);
-  
-  let w = 1;
-  stroke(150);
-  
-  translate(0, 0);
-  
-  for (var x = 0; x <= width; x += w)
-  {
-    for (var y = 0; y <= height; y+= w)
-    {
-      rect(x - 200, 80 - y, width/(2*zoomScale), (height/(2*zoomScale) + 10));
-      fill(250);
-
-    }
-  }
-}
 /**
- * 
- * @param {*} mathFunction 
- * @param {*} deltaX 
- * @param {*} upperLimit 
- * @param {*} lowerLimit 
+ * Draws the Riemann sum (rectangles).
+ * @param {*} mathFunction The math Function.
+ * @param {*} deltaX The length of each rectangle.
+ * @param {*} upperLimit The upper limit of integration, b.
+ * @param {*} lowerLimit The lower limit of integration, a.
  */
 function drawIntegral(mathFunction, deltaX, upperLimit, lowerLimit) {
     noFill();
@@ -394,7 +376,8 @@ function integral(f, deltaX, lowerLimit, upperLimit)
 }
 
 /**
- * Updates the mathFunction, and the limits of integration.
+ * Updates the mathFunction, the limits of integration,
+ * and the answer.
  */
 function updateIntegral() {
 
@@ -429,6 +412,8 @@ function updateIntegral() {
     mathFuncBox.value(defaultFunc);
   } 
   mathFunction = new MathFunc(mathFuncBox.value(), b, a);
+
+  answerBox.value(mathFunction.getApproxArea(deltaX));
 }
 
 // (OLD) Method for updating the limits of integration

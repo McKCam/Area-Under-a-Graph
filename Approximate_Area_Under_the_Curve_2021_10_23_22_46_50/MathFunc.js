@@ -17,9 +17,9 @@ class MathFunc {
 	 * @param {number} lowerLimit The upper limit for evaluation.
 	 */
     constructor(inputMathFunc, upperLimit, lowerLimit) {
-        this.inputMathFunc = inputMathFunc;
-		this.upperLimit = upperLimit;
-		this.lowerLimit = lowerLimit;
+      this.inputMathFunc = inputMathFunc;
+			this.upperLimit = upperLimit;
+			this.lowerLimit = lowerLimit;
     }
 
     // /**
@@ -72,13 +72,10 @@ class MathFunc {
 
 	/**
 	 * Computes the approximate area under the given curve.
-	 * @param {string} inputMathFunc The given math function. 
-	 * @param {number} upperLimit The upper limit, b.
-	 * @param {number} lowerLimit The lower limit, a.
 	 * @param {number} deltaX The change in x for each step.
 	 * @return {number} The approximate area under the curve. 
 	 */
-	getApproxArea(inputMathFunc, upperLimit, lowerLimit, deltaX) {
+	getApproxArea(deltaX) {
         let parser = math.parser();
 		//console.log('f(x) = ' + inputMathFunc)
 		const parseFunc = parser.evaluate('f(x) = ' + this.inputMathFunc);
