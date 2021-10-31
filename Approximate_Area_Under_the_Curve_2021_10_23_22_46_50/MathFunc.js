@@ -22,13 +22,6 @@ class MathFunc {
 			this.lowerLimit = lowerLimit;
     }
 
-    // /**
-    //  * Uses math.js to parse the given input String 
-    //  */
-    // runMathFunc() {
-		
-    // }
-
 	/**
 	 *	Accessor for getting a function representation of the math function
 	 */
