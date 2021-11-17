@@ -231,9 +231,21 @@ function updateIntegral() {
   if (mathFuncBox.value() == "") {
     // Use the defaultFunc
     mathFuncBox.value(defaultFunc);
-  } 
-  //mathFunction = new MathFunc(mathFuncBox.value(), b, a);
-  mathFunction = new MathFunc(mathFuncBox.value(), upperLimit, lowerLimit);
+  } else {
+    try {
+    //mathFunction = new MathFunc(mathFuncBox.value(), b, a);
+    mathFunction = new MathFunc(mathFuncBox.value(), upperLimit, lowerLimit);
+    answerBox.value(mathFunction.getApproxArea(deltaX));
 
-  answerBox.value(mathFunction.getApproxArea(deltaX));
+    } catch(error) {
+      if (error instanceof SyntaxError) {
+        //console.log("SYNTAX ERROR MESSAGE WENT THRU" + error);
+        mathFuncBox.value(defaultFunc);  
+        mathFunction = new MathFunc(mathFuncBox.value(), upperLimit, lowerLimit);
+        answerBox.value(mathFunction.getApproxArea(deltaX));
+      } 
+    }
+}
+  //mathFunction = new MathFunc(mathFuncBox.value(), upperLimit, lowerLimit);
+  //answerBox.value(mathFunction.getApproxArea(deltaX));
 }
