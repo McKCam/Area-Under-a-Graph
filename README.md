@@ -9,7 +9,7 @@ The program defaults to a linear function, x, and allows the user to input funct
 Functionality that needs to be worked on:
 -User validation for inputting functions
 
-Functionality that I would like to have:
--Add a slider that modifies the color of the Riemann sum rectangles
--Allow the user to scroll around the graph (something like orbitControl() in WEBGL, but for 2D)
--Add more numerical methods (like midpoint)
+Features that I would like to implement in the near future: <br />
+-Add a slider that modifies the color of the Riemann sum rectangles <br />
+-Allow the user to scroll around the graph (something like orbitControl() in WEBGL, but for 2D) <br />
+-Add more numerical methods (like midpoint) <br />
