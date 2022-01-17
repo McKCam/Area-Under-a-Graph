@@ -1,6 +1,6 @@
 # Area Under a Graph
 
-Program computes and visualizes approximations of single-variable integrals using (left-hand) Riemann sum method and the p5.js graphics library.
+Program computes and visualizes approximations of single-variable integrals using (left-hand) Riemann sum method.
 
 The program can be ran using the p5.js online editor [here.](https://editor.p5js.org/McKCam/sketches/GWQ0XGAO2)
 
