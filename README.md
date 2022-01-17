@@ -1,6 +1,8 @@
 # Area Under a Graph
 
-Program computes and visualizes approximations of single-variable integrals using (left-hand) Riemann sum method.
+Program computes and visualizes approximations of single-variable integrals using (left-hand) Riemann sum method and the p5.js graphics library.
+
+The program can be ran using the p5.js online editor [here.](https://editor.p5js.org/McKCam/sketches/GWQ0XGAO2)
 
 The user can enter valid functions in the following forms: <br />
 -x^2 <br />
@@ -11,8 +13,8 @@ The function parsing and evaluation is handled using the math.js library. The vi
 
 The program defaults to a linear function, x, and allows the user to input functions.
 
-Functionality that needs to be worked on:
--User validation for inputting functions < br />
+Functionality that needs to be worked on: <br />
+-User validation for inputting functions <br />
 
 Features that I would like to implement in the near future: <br />
 -Add a slider that modifies the color of the Riemann sum rectangles <br />
