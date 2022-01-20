@@ -4,11 +4,6 @@ Program computes and visualizes approximations of single-variable integrals usin
 
 The program can be ran using the p5.js online editor [here.](https://editor.p5js.org/McKCam/sketches/svv5vEnaz)
 
-The user can enter valid functions in the following forms: <br />
--x^2 <br />
--x*x <br />
--2x <br />
-
 The function parsing and evaluation is handled using the math.js library. The visualization is created using p5.js.
 
 The program defaults to a linear function, x, and allows the user to input *valid* math functions.
